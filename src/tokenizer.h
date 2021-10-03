@@ -74,8 +74,22 @@ char *word_start(char *str)
 /* Counts the number of space seperated words in the string argument. */
 int count_words(char *str)
 {
-  int i;
+  int i=0;
   int counter=0;
+  char *char_ptr=(char *)malloc(sizeof(char*));
+  char_ptr=str;
+  while(*char_ptr!='\0')
+    {
+      printf("while loop\n");
+      if(space_char(str[i])==1){
+	counter++;
+      }
+      i++;
+      char_ptr++;
+    }
+  free char_ptr;
+  return counter;
+  /*
   for(i=0;i<sizeof(str);i++)
     {
       if(space_char(str[i])==1){
@@ -84,7 +98,7 @@ int count_words(char *str)
       }
       printf("anything\n");
     }
-  return counter;
+    return counter;*/
 }  
 
 /* Returns a newly allocated zero-terminated string
