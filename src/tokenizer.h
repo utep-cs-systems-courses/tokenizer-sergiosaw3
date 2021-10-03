@@ -34,44 +34,58 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   int i;
-  char *t=(char *)malloc(sizeof(char*));
-  *t=str;
-  for(i=0;i<sizeof(t);i++)
+  char *char_ptr=(char *)malloc(sizeof(char*));
+  char_ptr=str;
+  for(i=0;i<sizeof(str);i++)
     {
-      printf("for loop works %p okay\n",t);
-      printf("inside: %c\n",t);
-      printf("at 1: %c\n",t[1]);
-      t++;
-      //printf("for loop\n");
-      ///if(non_space_char(str[i])==1)
-      //if(none_space_char(t)==1)
-      ///{
-	  // printf("word start found");
-	  ///printf("we got here\n");
-	  ///return str[i];
-	  //return t;
-      ///}
+      printf("t= %c\n",*char_ptr);
+      if(non_space_char(str[i])==1)
+	{
+	  //printf("this is non-space char\n");
+	  return char_ptr;
+	}
+      char_ptr++;
     }
-  //free t;
-  return t;
+  return char_ptr;
  }
 
 /* Returns a pointer terminator to the first space character or string-terminator
    following str in a zero terminated string.
    str is assumed to be pointing to a non-space character*/
- char *word_end(char *str);/*
+ char *word_end(char *str)
 {
-  for(i=0;i<*str;i++)
+  int i;
+  char *char_ptr=(char *)malloc(sizeof(char*));
+  char_ptr=str;
+  for(i=0;i<sizeof(str);i++)
     {
-      if(space_char(*str[i])==1)
+      //printf("char_ptr = %c\n",*char_ptr);
+      if(space_char(str[i])==1)
 	{
-	  return *str[i];
+	  //printf("this is space char\n");
+	  return char_ptr;
 	}
+      
+      char_ptr++;
     }
+  return char_ptr;
 }
-/*
+
 /* Counts the number of space seperated words in the string argument. */
-int count_words(char *str);
+int count_words(char *str)
+{
+  int i;
+  int counter=0;
+  for(i=0;i<sizeof(str);i++)
+    {
+      if(space_char(str[i])==1){
+	printf("word found\n");
+	counter++;
+      }
+      printf("anything\n");
+    }
+  return counter;
+}  
 
 /* Returns a newly allocated zero-terminated string
    containing <len> chars from <inStr> */
