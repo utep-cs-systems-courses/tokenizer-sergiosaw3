@@ -34,12 +34,13 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   int i;
-  char *t=(char *)malloc(sizeof(str));
-  t=str;
+  char *t=(char *)malloc(sizeof(char*));
+  *t=str;
   for(i=0;i<sizeof(t);i++)
     {
       printf("for loop works %p okay\n",t);
       printf("inside: %c\n",t);
+      printf("at 1: %c\n",t[1]);
       t++;
       //printf("for loop\n");
       ///if(non_space_char(str[i])==1)
@@ -52,6 +53,7 @@ char *word_start(char *str)
       ///}
     }
   //free t;
+  return t;
  }
 
 /* Returns a pointer terminator to the first space character or string-terminator
