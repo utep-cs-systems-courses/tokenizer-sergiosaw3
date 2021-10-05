@@ -33,17 +33,17 @@ int non_space_char(char c)
    str is assumed to be pointing to a space character */
 char *word_start(char *str)
 {
-  int i;
+  int i=0;
   char *char_ptr=(char *)malloc(sizeof(char*));
   char_ptr=str;
-  for(i=0;i<sizeof(str);i++)
+  while(*char_ptr!='\0')
     {
-      printf("t= %c\n",*char_ptr);
+      //printf("in while\n");
       if(non_space_char(str[i])==1)
 	{
-	  //printf("this is non-space char\n");
 	  return char_ptr;
 	}
+      i++;
       char_ptr++;
     }
   return char_ptr;
@@ -54,18 +54,16 @@ char *word_start(char *str)
    str is assumed to be pointing to a non-space character*/
  char *word_end(char *str)
 {
-  int i;
+  int i=0;
   char *char_ptr=(char *)malloc(sizeof(char*));
   char_ptr=str;
-  for(i=0;i<sizeof(str);i++)
+  while(*char_ptr!='\0')
     {
-      //printf("char_ptr = %c\n",*char_ptr);
       if(space_char(str[i])==1)
 	{
-	  //printf("this is space char\n");
 	  return char_ptr;
 	}
-      
+      i++;
       char_ptr++;
     }
   return char_ptr;
@@ -76,34 +74,43 @@ int count_words(char *str)
 {
   int i=0;
   int counter=0;
-  char *char_ptr=(char *)malloc(sizeof(char*));
-  char_ptr=str;
-  while(*char_ptr!='\0')
+  //char *char_ptr=(char *)malloc(sizeof(char*));
+  //char_ptr=str;
+  //while(*char_ptr!='\0')
+  while(str[i]!='\0')
     {
-      printf("while loop\n");
+      //printf("while loop\n");
       if(space_char(str[i])==1){
 	counter++;
       }
       i++;
-      char_ptr++;
+      //char_ptr++;
     }
-  free char_ptr;
   return counter;
-  /*
-  for(i=0;i<sizeof(str);i++)
-    {
-      if(space_char(str[i])==1){
-	printf("word found\n");
-	counter++;
-      }
-      printf("anything\n");
-    }
-    return counter;*/
 }  
 
 /* Returns a newly allocated zero-terminated string
    containing <len> chars from <inStr> */
-char *copy_str(char *inStr, short len);
+char *copy_str(char *inStr, short len)
+{
+  char *char_ptr=inStr;
+  char *copy=(char *)malloc((len+1)*sizeof(char*));
+  copy[len]='\0';
+  //char_ptr[len+1]='\0';
+  int count=(int)len;
+  int i=0;
+  while(*char_ptr!='\0')
+    {
+      if(i==count-1)
+	{
+	  return copy;
+	}
+      copy[i]=*char_ptr;
+      i++;
+      char_ptr++;
+    }
+  return copy;
+}
 
 /* Returns a newly allocated zero-terminated vector of freshly allocated
    space-separated tokens from zero-terminated str.
@@ -114,10 +121,42 @@ char *copy_str(char *inStr, short len);
      tokens[2] = "string"
      tokens[3] = 0
 */
-char **tokenize(char* str);
+char **tokenize(char* str)
+{
+  int size=count_words(str);
+  char **tokens=(char**)malloc((size+1)*sizeof(char));
+  char *start=str;
+  char *end=word_end(str);
+  int i;
+  int j;
+  for(i=0;i<=size;i++)
+    {
+      if(i>0)
+	{
+	  start=word_start(end);
+	  end=word_end(start);
+	}
+      int wsize=end-start;
+      tokens[i]=malloc(wsize*sizeof(char));
+      for(int j=0;j<wsize;j++)
+	{
+	  tokens[i][j]=start[j];
+	}
+    }
+  tokens[i]=0;
+  return tokens;
+}
 
 /* Prints all tokens. */
-void print_tokens(char **tokens);
+void print_tokens(char **tokens)
+{
+  int i;
+  while(tokens[i]!=NULL)
+    {
+      printf("Tokens[%d] = %s\n",i,tokens[i]);
+      i++;
+    }
+}
 
 /* Returns a point to the id'th token in the array.
    For exmple if toks contained:
@@ -129,9 +168,21 @@ void print_tokens(char **tokens);
   And get_token(tokens, 2) is called a pointer to
   "string" is returned.
 */
-char *get_token(char **tokens, int id);
+char *get_token(char **tokens, int id)
+{
+  return tokens[id];
+}
 
 /* Frees all tokens and the vector containing them. */
-void free_tokens(char **tokens);
+void free_tokens(char **tokens)
+{
+  int i;
+  while(tokens[i]!=NULL)
+    {
+      free(tokens[i]);
+      i++;
+    }
+  free(tokens);
+}
 
 #endif
