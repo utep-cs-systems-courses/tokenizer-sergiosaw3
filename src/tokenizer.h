@@ -101,7 +101,7 @@ char *copy_str(char *inStr, short len)
   int i=0;
   while(*char_ptr!='\0')
     {
-      if(i==count-1)
+      if(i==count)
 	{
 	  return copy;
 	}
@@ -138,10 +138,7 @@ char **tokenize(char* str)
 	}
       int wsize=end-start;
       tokens[i]=malloc(wsize*sizeof(char));
-      for(int j=0;j<wsize;j++)
-	{
-	  tokens[i][j]=start[j];
-	}
+      tokens[i]=copy_str(start,wsize);
     }
   tokens[i]=0;
   return tokens;
