@@ -27,16 +27,23 @@ List* init_history()
 void add_history(List *list, char *str)
 {
   Item *add=(Item*)malloc(sizeof(Item*));
+  //Item *list1=list;
+  printf("list root: %p\n",list->root);
   if(list->root==NULL)
     {
+      printf("in if\n");
       add->id=1;
       list->root=add;
     }
   else
-    { 
+    {
+      printf("in else\n");
       Item *old=list->root;
+      //printf("in else\n");
+      //printf("list root %p\n",old->next);
       while(old->next!=NULL)
 	{
+	  printf("here\n");
 	  old=old->next;
 	}
       add->id=old->id+1;
@@ -71,13 +78,26 @@ char *get_history(List *list, int id)
 /*Print the entire contents of the list. */
   void print_history(List *list)
   {
-    while(list!=NULL)
+    Item *ptr=list->root;
+    while(ptr!=NULL)
       {
-	printf("id[%d]: %s\n",list->root->id,list->root->str);
+	//printf("id[%d]: %s\n",list->root->id,list->root->str);
+	printf("id[%d]: %s\n",ptr->id,ptr->str);
+	ptr=ptr->next;
       }
   }
 
 /*Free the history list and the strings it references. */
-  void free_history(List *list);
+void free_history(List *list)
+{
+  Item *tmp;
+  Item *ptr=list->root;
+  while(ptr!=NULL)
+    {
+      tmp=ptr;
+      ptr=ptr->next;
+      free(tmp);
+    }
+}
 
 #endif
